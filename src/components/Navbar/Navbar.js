@@ -9,7 +9,7 @@ function Navbar() {
       <ul className="nav__container">
         {nav.map((item, index) => (
           <li key={index} className="nav__item">
-            <a href="#" className="nav__link">
+            <a href="#/" className="nav__link">
               {item}
             </a>
           </li>
