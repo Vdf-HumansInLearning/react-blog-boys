@@ -1,0 +1,25 @@
+.title {
+  text-align: center;
+  font-size: 46px;
+  font-family: "Montserrat", sans-serif;
+  color: var(--font-color);
+  margin-bottom: 30px;
+  line-height: 57px;
+  margin-right: 260px;
+  margin-left: 260px;
+}
+
+.info__container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.info__item {
+  margin: 0px 20px;
+  color: var(--primary-color-font);
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  position: relative;
+}
