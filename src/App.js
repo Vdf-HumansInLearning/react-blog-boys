@@ -6,9 +6,9 @@ import ArticlesList from "./components/ArticlesList/ArticlesList";
 import Loader from "./components/Loader/Loader";
 import SuccessAlert from "./components/SuccessAlert/SuccessAlert";
 import "./App.css";
-// import Article from "./components/Article/Article";
 import FooterLinks from "./components/FooterLinks/FooterLinks";
 import DarkModeButton from "./components/DarkModeButton/DarkModeButton";
+import Modal from "./components/Modal/Modal";
 
 class App extends Component {
   render() {
@@ -17,6 +17,7 @@ class App extends Component {
         <Loader />
         <SuccessAlert />
         <DarkModeButton/>
+        <Modal />
         <Navbar />
         <AddArticleButton />
         <ArticlesList />
