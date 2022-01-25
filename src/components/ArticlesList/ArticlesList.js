@@ -2,6 +2,8 @@ import { render } from "@testing-library/react";
 import React from "react";
 import { Component } from "react/cjs/react.production.min";
 import Article from "../Article/Article";
+import "./ArticlesList.css";
+
 
 class ArticlesList extends Component {
   constructor(props) {
