@@ -7,7 +7,6 @@ import Loader from "./../components/Loader/Loader";
 import SuccessAlert from "./../components/SuccessAlert/SuccessAlert";
 import "./../Home.css";
 import FooterLinks from "./../components/FooterLinks/FooterLinks";
-import DarkModeButton from "./../components/DarkModeButton/DarkModeButton";
 import ModalAddArticle from "./../components/ModalAddArticle/ModalAddArticle";
 import ModalAlert from "./../components/ModalAlert/ModalAlert";
 
@@ -17,7 +16,6 @@ class Home extends Component {
       <>
         <Loader />
         <SuccessAlert />
-        <DarkModeButton />
         <Navbar />
         <ModalAddArticle />
         <ModalAlert />
