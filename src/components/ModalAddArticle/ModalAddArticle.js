@@ -1,7 +1,7 @@
 import React from "react";
-import "./Modal.css";
+import "./ModalAddArticle.css";
 
-function Modal() {
+function ModalAddArticle() {
   return (
     <div id="modal-box" className="modal__overlay">
       <div className="add-modal">
@@ -73,4 +73,4 @@ function Modal() {
   );
 }
 
-export default Modal;
+export default ModalAddArticle;
