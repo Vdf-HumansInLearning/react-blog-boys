@@ -1,14 +1,14 @@
-import { render } from "@testing-library/react";
 import React from "react";
 import { Component } from "react/cjs/react.production.min";
 import Article from "../Article/Article";
 import "./ArticlesList.css";
 
-
 class ArticlesList extends Component {
   constructor(props) {
     super(props);
-    this.state = { articlesList: [] };
+    this.state = {
+      articlesList: [],
+    };
   }
 
   componentDidMount() {
@@ -24,7 +24,9 @@ class ArticlesList extends Component {
         }
 
         response.json().then(function (data) {
-          self.setState({ articlesList: data });
+          self.setState({
+            articlesList: data,
+          });
         });
       })
       .catch(function (err) {
@@ -40,9 +42,7 @@ class ArticlesList extends Component {
 
     return (
       <div id="root" className="main error">
-        <article>
-          {articles}
-        </article>
+        <article>{articles}</article>
       </div>
     );
   }
