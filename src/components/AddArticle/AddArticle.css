@@ -1,6 +1,12 @@
 #add-article-button {
-    width: 1280px;
-    margin: 0px auto;
-    overflow: hidden;
-    background-color: var(--bg-color);
-  }
+  width: 1280px;
+  margin: 0px auto;
+  overflow: hidden;
+  background-color: var(--bg-color);
+}
+
+.add__container {
+  text-align: right;
+  height: 60px;
+  margin-bottom: 90px;
+}
