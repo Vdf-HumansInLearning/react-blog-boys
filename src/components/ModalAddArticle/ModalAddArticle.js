@@ -3,7 +3,7 @@ import "./ModalAddArticle.css";
 
 class ModalAddArticle extends Component {
   render() {
-    if (this.props.showModal) {
+    if (this.props.showModalAddArticle) {
       return (
         <div id="modal-box" className="modal__overlay">
           <div className="add-modal">
@@ -61,7 +61,7 @@ class ModalAddArticle extends Component {
                 <button
                   type="button"
                   className="button close-modal"
-                  onClick={this.props.closeModal}
+                  onClick={() => this.props.closeModal("add")}
                 >
                   Cancel
                 </button>

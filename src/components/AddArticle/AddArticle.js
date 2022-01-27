@@ -14,12 +14,12 @@ class AddArticle extends Component {
         <div className="add__container">
           <button
             className="button open-modal fas fa-plus"
-            onClick={this.props.openModal}
+            onClick={() => this.props.openModal("add")}
           >
             Add Article
           </button>
           <ModalAddArticle
-            showModal={this.props.showModal}
+            showModalAddArticle={this.props.showModalAddArticle}
             closeModal={this.props.closeModal}
           />
         </div>

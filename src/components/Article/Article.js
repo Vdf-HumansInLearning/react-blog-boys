@@ -1,8 +1,14 @@
 import React from "react";
 import { Component } from "react/cjs/react.production.min";
+import ModalAlert from "../ModalAlert/ModalAlert";
+import ModalAddArticle from "../ModalAddArticle/ModalAddArticle";
 import "./Article.css";
 
 class Article extends Component {
+  constructor(props) {
+    super(props);
+    props = this.props;
+  }
   render() {
     const article = this.props.article;
     return (
@@ -17,12 +23,34 @@ class Article extends Component {
           <li className="info__item">{article.date}</li>
         </ul>
         <div className="actions__container">
-          <button type="button" className="actions__btn border" id={article.id}>
-            Edit
-          </button>
-          <button type="button" className="actions__btn" id={article.id}>
-            Delete
-          </button>
+          <div>
+            <button
+              type="button"
+              className="actions__btn border"
+              id={article.id}
+              onClick={() => this.props.openModal("add")}
+            >
+              Edit
+            </button>
+            <ModalAddArticle
+              showModalAddArticle={this.props.showModalAddArticle}
+              closeModal={this.props.closeModal}
+            />
+          </div>
+          <div>
+            <button
+              type="button"
+              className="actions__btn"
+              id={article.id}
+              onClick={() => this.props.openModal("alert")}
+            >
+              Delete
+            </button>
+            <ModalAlert
+              showModalAlert={this.props.showModalAlert}
+              closeModal={this.props.closeModal}
+            />
+          </div>
         </div>
         <img src={article.imgUrl} alt={article.imgAlt}></img>
         <div className="content__container">

@@ -13,7 +13,6 @@ class ArticlesList extends Component {
 
   componentDidMount() {
     const self = this;
-
     fetch("http://localhost:4000/articles")
       .then(function (response) {
         if (response.status !== 200) {
@@ -37,7 +36,13 @@ class ArticlesList extends Component {
   render() {
     const { articlesList } = this.state;
     const articles = articlesList.map((article) => (
-      <Article article={article} key={article.id} />
+      <Article
+        article={article}
+        key={article.id}
+        showModalAlert={this.props.showModalAlert}
+        openModal={this.props.openModal}
+        closeModal={this.props.closeModal}
+      />
     ));
 
     return (

@@ -7,40 +7,57 @@ import Loader from "./../components/Loader/Loader";
 import SuccessAlert from "./../components/SuccessAlert/SuccessAlert";
 import "./../Home.css";
 import FooterLinks from "./../components/FooterLinks/FooterLinks";
-import ModalAlert from "./../components/ModalAlert/ModalAlert";
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false,
+      showModalAddArticle: false,
+      showModalAlert: false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
-  openModal() {
-    this.setState({ showModal: true });
+  openModal(option) {
+    if (option === "add") {
+      this.setState({ showModalAddArticle: true });
+    }
+    if (option === "alert") {
+      this.setState({ showModalAlert: true });
+    }
   }
 
-  closeModal() {
-    this.setState({ showModal: false });
+  closeModal(option) {
+    if (option === "add") {
+      this.setState({ showModalAddArticle: false });
+    }
+    if (option === "alert") {
+      this.setState({ showModalAlert: false });
+    }
   }
 
   render() {
+    const showModalAddArticle = this.state.showModalAddArticle;
+    const showModalAlert = this.state.showModalAlert;
+
     return (
       <>
         <Loader />
         <SuccessAlert />
         <Navbar />
 
-        <ModalAlert />
         <AddArticle
-          showModal={this.state.showModal}
+          showModalAddArticle={showModalAddArticle}
           openModal={this.openModal}
           closeModal={this.closeModal}
         />
-        <ArticlesList />
+
+        <ArticlesList
+          showModalAlert={showModalAlert}
+          openModal={this.openModal}
+          closeModal={this.closeModal}
+        />
         <FooterLinks />
       </>
     );
