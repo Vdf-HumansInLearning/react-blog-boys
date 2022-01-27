@@ -23,34 +23,30 @@ class Article extends Component {
           <li className="info__item">{article.date}</li>
         </ul>
         <div className="actions__container">
-          <div>
-            <button
-              type="button"
-              className="actions__btn border"
-              id={article.id}
-              onClick={() => this.props.openModal("add")}
-            >
-              Edit
-            </button>
-            <ModalAddArticle
-              showModalAddArticle={this.props.showModalAddArticle}
-              closeModal={this.props.closeModal}
-            />
-          </div>
-          <div>
-            <button
-              type="button"
-              className="actions__btn"
-              id={article.id}
-              onClick={() => this.props.openModal("alert")}
-            >
-              Delete
-            </button>
-            <ModalAlert
-              showModalAlert={this.props.showModalAlert}
-              closeModal={this.props.closeModal}
-            />
-          </div>
+          <button
+            type="button"
+            className="actions__btn border"
+            id={article.id}
+            onClick={() => this.props.openModal("add")}
+          >
+            Edit
+          </button>
+          <ModalAddArticle
+            showModalAddArticle={this.props.showModalAddArticle}
+            closeModal={this.props.closeModal}
+          />
+          <button
+            type="button"
+            className="actions__btn"
+            id={article.id}
+            onClick={() => this.props.openModal("alert")}
+          >
+            Delete
+          </button>
+          <ModalAlert
+            showModalAlert={this.props.showModalAlert}
+            closeModal={this.props.closeModal}
+          />
         </div>
         <img src={article.imgUrl} alt={article.imgAlt}></img>
         <div className="content__container">
