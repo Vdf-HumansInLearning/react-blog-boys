@@ -8,7 +8,6 @@ class ModalAlert extends Component {
       return (
         <div id="modal-alert" className="modal__overlay__alert">
           <div id="div-modal-alert" className="delete-modal-alert">
-            <div className="modal-content">
               <div className="alert-container">
                 <h1 className="alert-title">Delete Article</h1>
                 <p className="alert-delete-p">
@@ -22,12 +21,11 @@ class ModalAlert extends Component {
                   >
                     Cancel
                   </button>
-                  <button type="button" className="button delete-alert-button">
+                  <button type="button" className="delete-alert-button">
                     Delete
                   </button>
                 </div>
               </div>
-            </div>
           </div>
         </div>
       );
