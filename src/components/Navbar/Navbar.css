@@ -27,26 +27,8 @@ li {
   letter-spacing: 5px;
 }
 
-.add__container {
-  text-align: right;
-  height: 60px;
-  margin-bottom: 90px;
-}
 
-.button {
-  width: 300px;
-  border-radius: 50px;
-  border: 1px solid var(--primary-color-font);
-  height: 60px;
-  font-size: 14px;
-  text-transform: uppercase;
-  color: var(--font-color);
-  font-family: "Montserrat", sans-serif;
-  letter-spacing: 5px;
-  line-height: 18px;
-  background-color: var(--bg-color);
-  cursor: pointer;
-}
+
 
 .open-modal {
   background-color: var(--bg-color);
@@ -418,3 +400,4 @@ p.line-height {
     background-position: left;
   }
 }
+
