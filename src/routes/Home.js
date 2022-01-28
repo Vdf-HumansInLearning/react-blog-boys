@@ -4,9 +4,11 @@ import AddArticle from "./../components/AddArticle/AddArticle";
 import Navbar from "./../components/Navbar/Navbar";
 import ArticlesList from "./../components/ArticlesList/ArticlesList";
 import Loader from "./../components/Loader/Loader";
-import SuccessAlert from "./../components/SuccessAlert/SuccessAlert";
 import "./../Home.css";
 import FooterLinks from "./../components/FooterLinks/FooterLinks";
+import SuccessAlert from "../components/SuccessAlert/SuccessAlert";
+import ModalAddArticle from "../components/ModalAddArticle/ModalAddArticle";
+import ModalAlert from "../components/ModalAlert/ModalAlert";
 
 class Home extends Component {
   constructor(props) {
@@ -14,6 +16,7 @@ class Home extends Component {
     this.state = {
       showModalAddArticle: false,
       showModalAlert: false,
+      showSuccessMessage: false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -25,6 +28,9 @@ class Home extends Component {
     }
     if (option === "alert") {
       this.setState({ showModalAlert: true });
+    }
+    if (option === "success") {
+      this.setState({ showSuccessMessage: true });
     }
   }
 
@@ -40,17 +46,19 @@ class Home extends Component {
   render() {
     const showModalAddArticle = this.state.showModalAddArticle;
     const showModalAlert = this.state.showModalAlert;
+    const showSuccessMessage = this.state.showSuccessMessage;
 
     return (
       <>
         <Loader />
-        <SuccessAlert />
+        <SuccessAlert showSuccessMessage={this.props.showSuccessMessage} />
         <Navbar />
 
         <AddArticle
           showModalAddArticle={showModalAddArticle}
           openModal={this.openModal}
           closeModal={this.closeModal}
+          showSuccessMessage={showSuccessMessage}
         />
 
         <ArticlesList
@@ -58,7 +66,11 @@ class Home extends Component {
           openModal={this.openModal}
           closeModal={this.closeModal}
         />
+
         <FooterLinks />
+
+        <ModalAddArticle />
+        <ModalAlert />
       </>
     );
   }

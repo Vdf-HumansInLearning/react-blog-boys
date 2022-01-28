@@ -21,6 +21,8 @@ class AddArticle extends Component {
           <ModalAddArticle
             showModalAddArticle={this.props.showModalAddArticle}
             closeModal={this.props.closeModal}
+            openModal={this.props.openModal}
+            showSuccessMessage={this.props.showSuccessMessage}
           />
         </div>
       </div>

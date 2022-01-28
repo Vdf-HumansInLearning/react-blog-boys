@@ -65,9 +65,17 @@ class ModalAddArticle extends Component {
                 >
                   Cancel
                 </button>
-                <button type="button" className="button button--pink">
+                <button
+                  type="button"
+                  className="button button--pink"
+                  onClick={() => {
+                    // this.props.openModal("success");
+                    this.props.closeModal("add");
+                  }}
+                >
                   Save
                 </button>
+
                 <button type="button" className="button button-edit-modal">
                   Edit
                 </button>
