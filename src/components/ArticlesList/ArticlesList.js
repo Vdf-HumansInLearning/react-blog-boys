@@ -46,7 +46,7 @@ class ArticlesList extends Component {
     ));
 
     return (
-      <div id="root" className="main error">
+      <div id="root-articlesList" className="main error">
         <article>{articles}</article>
       </div>
     );
