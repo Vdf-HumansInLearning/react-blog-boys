@@ -28,6 +28,13 @@ body {
   background-color: var(--bg-color);
 }
 
+#root {
+  width: 1280px;
+  margin: 0px auto;
+  overflow: hidden;
+  background-color: var(--bg-color);
+}
+
 .button {
   width: 300px;
   border-radius: 50px;
