@@ -103,3 +103,15 @@ button.button--pink {
   line-height: 30px;
   letter-spacing: 0px;
 }
+
+#error-modal {
+  display: flex;
+  justify-content: center;
+  color: red;
+  font-size: 21px;
+  font-family: "Montserrat";
+}
+
+#date {
+  background: var(--disabled-color);
+}
