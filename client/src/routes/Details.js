@@ -25,7 +25,7 @@ class Details extends Component {
     const self = this;
     const { id } = this.props.params;
 
-    fetch("http://localhost:4000/articles/" + id)
+    fetch("http://localhost:3007/articles/" + id)
       .then(function (response) {
         if (response.status !== 200) {
           console.log(

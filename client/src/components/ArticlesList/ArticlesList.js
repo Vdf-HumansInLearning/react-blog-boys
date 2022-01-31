@@ -13,7 +13,8 @@ class ArticlesList extends Component {
 
   componentDidMount() {
     const self = this;
-    fetch("http://localhost:4000/articles")
+
+    fetch("http://localhost:3007/articles")
       .then(function (response) {
         if (response.status !== 200) {
           console.log(
@@ -24,7 +25,7 @@ class ArticlesList extends Component {
 
         response.json().then(function (data) {
           self.setState({
-            articlesList: data,
+            articlesList: data.articles,
           });
         });
       })
@@ -35,6 +36,7 @@ class ArticlesList extends Component {
 
   render() {
     const { articlesList } = this.state;
+    console.log(articlesList);
     const articles = articlesList.map((article) => (
       <Article
         article={article}
