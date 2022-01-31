@@ -9,11 +9,11 @@ class ArticlesList extends Component {
     this.state = {
       articlesList: [],
     };
+    this.renderArticles = this.renderArticles.bind(this);
   }
 
-  componentDidMount() {
+  renderArticles() {
     const self = this;
-
     fetch("http://localhost:3007/articles")
       .then(function (response) {
         if (response.status !== 200) {
@@ -32,6 +32,10 @@ class ArticlesList extends Component {
       .catch(function (err) {
         console.log("Fetch Error :-S", err);
       });
+  }
+
+  componentDidMount() {
+    this.renderArticles();
   }
 
   render() {
