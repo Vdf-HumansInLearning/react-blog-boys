@@ -17,7 +17,7 @@ class ArticleDetails extends Component {
             </li>
             <li className="info__item">{article.date}</li>
           </ul>
-          <img src={article.imgUrl} alt={article.imgAlt}></img>
+          <img src={"../" + article.imgUrl} alt={"../" + article.imgAlt}></img>
           <div className="content__container">
             <p>{article.content}</p>
           </div>
