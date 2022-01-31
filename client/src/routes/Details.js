@@ -2,6 +2,7 @@ import React from "react";
 import { Component } from "react/cjs/react.production.min";
 import Navbar from "../components/Navbar/Navbar";
 import ArticleDetails from "./../components/ArticleDetails/ArticleDetails";
+import FooterLinks from "./../components/FooterLinks/FooterLinks";
 import { useParams } from "react-router-dom";
 
 class Details extends Component {
@@ -50,6 +51,7 @@ class Details extends Component {
       <>
         <Navbar />
         <ArticleDetails article={article} key={article.id} />
+        <FooterLinks />
       </>
     );
   }
