@@ -19,11 +19,18 @@ class Home extends Component {
       showSuccessMessage: false,
       articlesList: [],
       idToDelete: "",
+      numberOfArticles: 4,
+      indexStart: 0,
+      indexEnd: 3,
+      totalNumberOfArticles: 0,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.renderArticles = this.renderArticles.bind(this);
     this.deleteArticle = this.deleteArticle.bind(this);
+    this.updateStartEndIndexes = this.updateStartEndIndexes.bind(this);
+    this.handleNext = this.handleNext.bind(this);
+    this.handlePrevious = this.handlePrevious.bind(this);
   }
 
   openModal(option, id) {
@@ -47,9 +54,34 @@ class Home extends Component {
     }
   }
 
+  updateStartEndIndexes(button) {
+    if (button === "next") {
+      this.setState({
+        indexStart: this.state.indexStart + this.state.numberOfArticles,
+        indexEnd: this.state.indexEnd + this.state.numberOfArticles,
+      });
+    }
+    if (button === "previous") {
+      this.setState({
+        indexStart: this.state.indexStart - this.state.numberOfArticles,
+        indexEnd: this.state.indexEnd - this.state.numberOfArticles,
+      });
+    }
+  }
+
+  handlePrevious() {
+    this.updateStartEndIndexes("previous");
+  }
+
+  handleNext() {
+    this.updateStartEndIndexes("next");
+  }
+
   renderArticles() {
     const self = this;
-    fetch("http://localhost:3007/articles")
+    fetch(
+      `http://localhost:3007/articles?indexStart=${this.state.indexStart}&indexEnd=${this.state.indexEnd}`
+    )
       .then(function (response) {
         if (response.status !== 200) {
           console.log(
@@ -59,9 +91,17 @@ class Home extends Component {
         }
 
         response.json().then(function (data) {
-          self.setState({
-            articlesList: data.articles,
-          });
+          self.setState(
+            {
+              articlesList: data.articlesList,
+              totalNumberOfArticles: data.numberOfArticles,
+            },
+            () => {
+              if (data.articlesList.length === 0) {
+                self.handlePrevious();
+              }
+            }
+          );
         });
       })
       .catch(function (err) {
@@ -119,7 +159,6 @@ class Home extends Component {
           <article>{articles}</article>
         </div>
 
-        <FooterLinks />
         <ModalAddArticle
           showModalAddArticle={this.state.showModalAddArticle}
           closeModal={this.closeModal}
@@ -128,6 +167,14 @@ class Home extends Component {
           showModalAlert={this.state.showModalAlert}
           closeModal={this.closeModal}
           deleteArticle={this.deleteArticle}
+        />
+        <FooterLinks
+          indexStart={this.state.indexStart}
+          indexEnd={this.state.indexEnd}
+          totalNumberOfArticles={this.state.totalNumberOfArticles}
+          route="home"
+          handlePrevious={this.handlePrevious}
+          handleNext={this.handleNext}
         />
       </>
     );
