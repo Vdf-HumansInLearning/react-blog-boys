@@ -3,8 +3,6 @@ import { Component } from "react/cjs/react.production.min";
 import "./../Article/Article.css";
 
 class ArticleDetails extends Component {
-  splitArticle(content) {}
-
   render() {
     const article = this.props.article;
 
