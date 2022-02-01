@@ -18,6 +18,7 @@ class Details extends Component {
         imgUrl: "",
         imgAlt: "",
         content: "",
+        saying: "",
       },
     };
   }

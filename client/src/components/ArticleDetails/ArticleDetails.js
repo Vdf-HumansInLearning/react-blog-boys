@@ -3,8 +3,26 @@ import { Component } from "react/cjs/react.production.min";
 import "./../Article/Article.css";
 
 class ArticleDetails extends Component {
+  splitArticle(content) {}
+
   render() {
     const article = this.props.article;
+
+    let firstParagraph;
+    let secondParagraph;
+    let text = this.props.article.content;
+    let spliced = text.substring(0, text.length / 2);
+    if (
+      text.charAt(spliced.length - 1) === "!" ||
+      text.charAt(spliced.length - 1) === "." ||
+      text.charAt(spliced.length - 1) === "?"
+    ) {
+      firstParagraph = text.substring(0, text.length / 2);
+    } else {
+      firstParagraph = text.substring(0, spliced.lastIndexOf(".") + 1);
+    }
+    secondParagraph = text.substring(spliced.lastIndexOf(".") + 1);
+
     return (
       <>
         <div id={article.id}>
@@ -19,7 +37,9 @@ class ArticleDetails extends Component {
           </ul>
           <img src={"../" + article.imgUrl} alt={"../" + article.imgAlt}></img>
           <div className="content__container">
-            <p>{article.content}</p>
+            <p>{firstParagraph}</p>
+            <p className="saying">{article.saying}</p>
+            <p>{secondParagraph}</p>
           </div>
         </div>
       </>
