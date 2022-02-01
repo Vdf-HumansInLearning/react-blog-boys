@@ -77,6 +77,13 @@ class Home extends Component {
     this.updateStartEndIndexes("next");
   }
 
+  componentDidUpdate(previousProps, previousState) {
+    if (previousState.indexStart !== this.state.indexStart) {
+      this.renderArticles(this);
+      window.scrollTo(0, 0);
+    }
+  }
+
   renderArticles() {
     const self = this;
     fetch(
