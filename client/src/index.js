@@ -11,7 +11,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="details" element={<Details />}>
+        <Route path="article" element={<Details />}>
           <Route path=":id" element={<Details />} />
         </Route>
         <Route path="not-found" element={<Page404 />} />
