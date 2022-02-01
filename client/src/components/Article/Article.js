@@ -1,7 +1,5 @@
 import React from "react";
 import { Component } from "react/cjs/react.production.min";
-import ModalAlert from "../ModalAlert/ModalAlert";
-import ModalAddArticle from "../ModalAddArticle/ModalAddArticle";
 import "./Article.css";
 
 class Article extends Component {
@@ -9,8 +7,10 @@ class Article extends Component {
     super(props);
     props = this.props;
   }
+
   render() {
     const article = this.props.article;
+
     return (
       <div id={article.id}>
         <h2 className="title">{article.title}</h2>
@@ -31,22 +31,15 @@ class Article extends Component {
           >
             Edit
           </button>
-          <ModalAddArticle
-            showModalAddArticle={this.props.showModalAddArticle}
-            closeModal={this.props.closeModal}
-          />
+
           <button
             type="button"
             className="actions__btn"
             id={article.id}
-            onClick={() => this.props.openModal("alert")}
+            onClick={() => this.props.openModal("alert", article.id)}
           >
             Delete
           </button>
-          <ModalAlert
-            showModalAlert={this.props.showModalAlert}
-            closeModal={this.props.closeModal}
-          />
         </div>
         <img src={article.imgUrl} alt={article.imgAlt}></img>
         <div className="content__container">

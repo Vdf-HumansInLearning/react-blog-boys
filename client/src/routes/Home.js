@@ -18,18 +18,20 @@ class Home extends Component {
       showModalAlert: false,
       showSuccessMessage: false,
       articlesList: [],
+      idToDelete: "",
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.renderArticles = this.renderArticles.bind(this);
+    this.deleteArticle = this.deleteArticle.bind(this);
   }
 
-  openModal(option) {
+  openModal(option, id) {
     if (option === "add") {
       this.setState({ showModalAddArticle: true });
     }
     if (option === "alert") {
-      this.setState({ showModalAlert: true });
+      this.setState({ showModalAlert: true, idToDelete: id });
     }
     if (option === "success") {
       this.setState({ showSuccessMessage: true });
@@ -71,6 +73,19 @@ class Home extends Component {
     this.renderArticles();
   }
 
+  deleteArticle() {
+    fetch(`http://localhost:3007/articles/${this.state.idToDelete}`, {
+      method: "DELETE",
+    }).then((res) => {
+      if (res.status === 200) {
+        this.renderArticles();
+        this.setState({
+          idToDelete: "",
+        });
+      }
+    });
+  }
+
   render() {
     const showModalAddArticle = this.state.showModalAddArticle;
     const showModalAlert = this.state.showModalAlert;
@@ -80,6 +95,7 @@ class Home extends Component {
     const articles = articlesList.map((article) => (
       <Article
         article={article}
+        id={article.id}
         key={article.id}
         showModalAlert={showModalAlert}
         openModal={this.openModal}
@@ -104,8 +120,15 @@ class Home extends Component {
         </div>
 
         <FooterLinks />
-        <ModalAddArticle />
-        <ModalAlert />
+        <ModalAddArticle
+          showModalAddArticle={this.state.showModalAddArticle}
+          closeModal={this.closeModal}
+        />
+        <ModalAlert
+          showModalAlert={this.state.showModalAlert}
+          closeModal={this.closeModal}
+          deleteArticle={this.deleteArticle}
+        />
       </>
     );
   }
