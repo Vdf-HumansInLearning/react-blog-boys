@@ -53,7 +53,7 @@ class Article extends Component {
           <p>{article.content}</p>
         </div>
         <div className="readmore__container">
-          <a className="btn-details" href={"details/" + article.id}>
+          <a className="btn-details" href={"article/" + article.id}>
             <button type="button" className="button button-details">
               Read More
             </button>
