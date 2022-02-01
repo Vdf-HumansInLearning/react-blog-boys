@@ -52,7 +52,11 @@ class Details extends Component {
       <>
         <Navbar />
         <ArticleDetails article={article} key={article.id} />
-        <FooterLinks />
+        <FooterLinks
+          route="details"
+          previousArticle={this.state.article.prevId}
+          nextArticle={this.state.article.nextId}
+        />
       </>
     );
   }
