@@ -4,8 +4,9 @@ import Navbar from "../components/Navbar/Navbar";
 import ArticleDetails from "./../components/ArticleDetails/ArticleDetails";
 import FooterLinks from "./../components/FooterLinks/FooterLinks";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-class Details extends Component {
+class Details extends Component { 
   constructor(props) {
     super(props);
     this.state = {
@@ -33,6 +34,7 @@ class Details extends Component {
           console.log(
             "Looks like there was a problem. Status Code: " + response.status
           );
+          self.props.navigate("/*", { replace: true });
           return;
         }
 
@@ -64,7 +66,8 @@ class Details extends Component {
 
 const withRouter = (WrappedComponent) => (props) => {
   const params = useParams();
+  const navigate = useNavigate();
 
-  return <WrappedComponent {...props} params={params} />;
+  return <WrappedComponent {...props} params={params} navigate={navigate} />;
 };
 export default withRouter(Details);

@@ -49,3 +49,79 @@ body {
   background-color: var(--bg-color);
   cursor: pointer;
 }
+
+.error-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 304px);
+    flex-direction: column;
+    background-position: center;
+    position: absolute;
+    left: 0px;
+}
+
+.error-info {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.error {
+    margin: 0px;
+}
+
+.error-message {
+    font-size: 30px;
+    padding-bottom: 10px;
+    color: #f83d00;
+}
+
+.to-homepage {
+    padding: 13px;
+    border-radius: 10px;
+    background: #f83d00;
+    color: white;
+    border: none;
+}
+
+.img-dark {
+    background-image: url("/public/img/Valley-dark.jpg");
+}
+
+.img-light {
+    background-image: url("/public/img/Valley-light.jpg");
+}
+
+@media (max-width: 768px) {
+
+    /* page404 */
+    .error-info {
+        font-size: 30px;
+        margin-top: 100px;
+    }
+
+    .error-box {
+        position: relative;
+        height: 129vh;
+        background-position: center;
+    }
+}
+
+@media (max-width: 425px) {
+
+    /* page404 */
+    .error-info {
+        font-size: 50px;
+        margin-top: 300px;
+    }
+
+    .error-message {
+        font-size: 50px;
+    }
+
+    .error-box {
+        position: relative;
+        height: 262vh;
+        background-position: left;
+    }
+}
