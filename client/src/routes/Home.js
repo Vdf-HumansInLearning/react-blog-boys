@@ -17,8 +17,10 @@ class Home extends Component {
       showModalAddArticle: false,
       showModalAlert: false,
       showSuccessMessage: false,
+      showModalEdit: false,
       articlesList: [],
       idToDelete: "",
+      selectedArticleToEdit: {},
       numberOfArticles: 4,
       indexStart: 0,
       indexEnd: 3,
@@ -31,6 +33,8 @@ class Home extends Component {
     this.updateStartEndIndexes = this.updateStartEndIndexes.bind(this);
     this.handleNext = this.handleNext.bind(this);
     this.handlePrevious = this.handlePrevious.bind(this);
+    this.editArticle = this.editArticle.bind(this);
+    this.sendEditedArticle = this.sendEditedArticle.bind(this);
   }
 
   openModal(option, id) {
@@ -43,6 +47,9 @@ class Home extends Component {
     if (option === "success") {
       this.setState({ showSuccessMessage: true });
     }
+    if (option === "edit") {
+      this.setState({ showModalEdit: true });
+    }
   }
 
   closeModal(option) {
@@ -51,6 +58,9 @@ class Home extends Component {
     }
     if (option === "alert") {
       this.setState({ showModalAlert: false });
+    }
+    if (option === "edit") {
+      this.setState({ showModalEdit: false });
     }
   }
 
@@ -120,6 +130,22 @@ class Home extends Component {
     this.renderArticles();
   }
 
+  sendEditedArticle(article) {
+    console.log(article.id);
+    fetch(`http://localhost:3007/articles/${article.id}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify(article),
+    }).then((res) => {
+      if (res.status === 200) {
+        this.renderArticles(this);
+      }
+    });
+  }
+
   deleteArticle() {
     fetch(`http://localhost:3007/articles/${this.state.idToDelete}`, {
       method: "DELETE",
@@ -133,10 +159,21 @@ class Home extends Component {
     });
   }
 
+  editArticle(id) {
+    if (id) {
+      this.setState({
+        selectedArticleToEdit: this.state.articlesList.find(
+          (item) => item.id === id
+        ),
+      });
+    }
+  }
+
   render() {
     const showModalAddArticle = this.state.showModalAddArticle;
     const showModalAlert = this.state.showModalAlert;
     const showSuccessMessage = this.state.showSuccessMessage;
+    const showModalEdit = this.state.showModalEdit;
 
     const { articlesList } = this.state;
     const articles = articlesList.map((article) => (
@@ -145,8 +182,10 @@ class Home extends Component {
         id={article.id}
         key={article.id}
         showModalAlert={showModalAlert}
+        showModalEdit={showModalEdit}
         openModal={this.openModal}
         closeModal={this.closeModal}
+        editArticle={this.editArticle}
       />
     ));
 
@@ -166,15 +205,6 @@ class Home extends Component {
           <article>{articles}</article>
         </div>
 
-        <ModalAddArticle
-          showModalAddArticle={this.state.showModalAddArticle}
-          closeModal={this.closeModal}
-        />
-        <ModalAlert
-          showModalAlert={this.state.showModalAlert}
-          closeModal={this.closeModal}
-          deleteArticle={this.deleteArticle}
-        />
         <FooterLinks
           indexStart={this.state.indexStart}
           indexEnd={this.state.indexEnd}
@@ -182,6 +212,18 @@ class Home extends Component {
           route="home"
           handlePrevious={this.handlePrevious}
           handleNext={this.handleNext}
+        />
+        <ModalAddArticle
+          showModalAddArticle={this.state.showModalAddArticle}
+          closeModal={this.closeModal}
+          sendEditedArticle={this.sendEditedArticle}
+          showModalEdit={showModalEdit}
+          article={this.state.selectedArticleToEdit}
+        />
+        <ModalAlert
+          showModalAlert={this.state.showModalAlert}
+          closeModal={this.closeModal}
+          deleteArticle={this.deleteArticle}
         />
       </>
     );

@@ -40,7 +40,12 @@ class Article extends Component {
             type="button"
             className="actions__btn border"
             id={article.id}
-            onClick={() => this.props.openModal("add")}
+            onClick={() => {
+              console.log(this.props.showModalEdit);
+              this.props.openModal("edit", article.id);
+              console.log(this.props.showModalEdit);
+              this.props.editArticle(article.id);
+            }}
           >
             Edit
           </button>
