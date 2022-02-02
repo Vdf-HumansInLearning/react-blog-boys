@@ -5,8 +5,9 @@ import ArticleDetails from "./../components/ArticleDetails/ArticleDetails";
 import FooterLinks from "./../components/FooterLinks/FooterLinks";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Loader from "../components/Loader/Loader";
 
-class Details extends Component { 
+class Details extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +38,6 @@ class Details extends Component {
           self.props.navigate("/*", { replace: true });
           return;
         }
-
         // Examine the text in the response
         response.json().then(function (data) {
           self.setState({ article: data });
@@ -50,15 +50,22 @@ class Details extends Component {
 
   render() {
     const { article } = this.state;
+
     return (
       <>
-        <Navbar />
-        <ArticleDetails article={article} key={article.id} />
-        <FooterLinks
-          route="details"
-          previousArticle={this.state.article.prevId}
-          nextArticle={this.state.article.nextId}
-        />
+        {!this.state.article.id ? (
+            <Loader />
+        ) : (
+          <>
+            <Navbar />
+            <ArticleDetails article={article} key={article.id} />
+            <FooterLinks
+              route="details"
+              previousArticle={this.state.article.prevId}
+              nextArticle={this.state.article.nextId}
+            />
+          </>
+        )}
       </>
     );
   }

@@ -2,13 +2,13 @@ import React from "react";
 import { Component } from "react/cjs/react.production.min";
 import AddArticle from "./../components/AddArticle/AddArticle";
 import Navbar from "./../components/Navbar/Navbar";
-import Loader from "./../components/Loader/Loader";
 import "./../Home.css";
 import FooterLinks from "./../components/FooterLinks/FooterLinks";
 import SuccessAlert from "../components/SuccessAlert/SuccessAlert";
 import ModalAddArticle from "../components/ModalAddArticle/ModalAddArticle";
 import ModalAlert from "../components/ModalAlert/ModalAlert";
 import Article from "../components/Article/Article";
+import Loader from "../components/Loader/Loader";
 
 class Home extends Component {
   constructor(props) {
@@ -131,7 +131,6 @@ class Home extends Component {
   }
 
   sendEditedArticle(article) {
-    console.log(article.id);
     fetch(`http://localhost:3007/articles/${article.id}`, {
       headers: {
         Accept: "application/json",
@@ -191,40 +190,43 @@ class Home extends Component {
 
     return (
       <>
-        <Loader />
-        <SuccessAlert showSuccessMessage={this.props.showSuccessMessage} />
-        <Navbar />
-        <AddArticle
-          showModalAddArticle={showModalAddArticle}
-          openModal={this.openModal}
-          closeModal={this.closeModal}
-          showSuccessMessage={showSuccessMessage}
-        />
-
-        <div id="root-articlesList" className="main error">
-          <article>{articles}</article>
-        </div>
-
-        <FooterLinks
-          indexStart={this.state.indexStart}
-          indexEnd={this.state.indexEnd}
-          totalNumberOfArticles={this.state.totalNumberOfArticles}
-          route="home"
-          handlePrevious={this.handlePrevious}
-          handleNext={this.handleNext}
-        />
-        <ModalAddArticle
-          showModalAddArticle={this.state.showModalAddArticle}
-          closeModal={this.closeModal}
-          sendEditedArticle={this.sendEditedArticle}
-          showModalEdit={showModalEdit}
-          article={this.state.selectedArticleToEdit}
-        />
-        <ModalAlert
-          showModalAlert={this.state.showModalAlert}
-          closeModal={this.closeModal}
-          deleteArticle={this.deleteArticle}
-        />
+        {this.state.articlesList.length === 0 ? (
+          <Loader />
+        ) : (
+          <>
+            <SuccessAlert showSuccessMessage={this.props.showSuccessMessage} />
+            <Navbar />
+            <AddArticle
+              showModalAddArticle={showModalAddArticle}
+              openModal={this.openModal}
+              closeModal={this.closeModal}
+              showSuccessMessage={showSuccessMessage}
+            />
+            <div id="root-articlesList" className="main error">
+              <article>{articles}</article>
+            </div>
+            <FooterLinks
+              indexStart={this.state.indexStart}
+              indexEnd={this.state.indexEnd}
+              totalNumberOfArticles={this.state.totalNumberOfArticles}
+              route="home"
+              handlePrevious={this.handlePrevious}
+              handleNext={this.handleNext}
+            />
+            <ModalAddArticle
+              showModalAddArticle={this.state.showModalAddArticle}
+              closeModal={this.closeModal}
+              sendEditedArticle={this.sendEditedArticle}
+              showModalEdit={showModalEdit}
+              article={this.state.selectedArticleToEdit}
+            />
+            <ModalAlert
+              showModalAlert={this.state.showModalAlert}
+              closeModal={this.closeModal}
+              deleteArticle={this.deleteArticle}
+            />
+          </>
+        )}
       </>
     );
   }
