@@ -23,9 +23,12 @@ class ModalAddArticle extends Component {
       imgAlt: "",
       saying: "",
       content: "",
+      valid: false,
+      errors: [],
     };
     this.handleChange = this.handleChange.bind(this);
     this.resetForm = this.resetForm.bind(this);
+    this.validateModal = this.validateModal.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -65,6 +68,8 @@ class ModalAddArticle extends Component {
       imgAlt: "",
       saying: "",
       content: "",
+      valid: false,
+      errors: [],
     });
   }
 
@@ -72,10 +77,77 @@ class ModalAddArticle extends Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    this.setState({
-      ...this.state,
-      [name]: value,
-    });
+    this.setState(
+      {
+        ...this.state,
+        [name]: value,
+      },
+      this.validateModal
+    );
+  }
+
+  validateModal() {
+    let { title, imgUrl, content, tag, author, saying } = this.state;
+    let errors = [];
+    let regexJpg = /\.(jpe?g|png|gif|bmp)$/i;
+    let upperCaseLetter = /([A-Z]{1})([a-z]+)(\s)([A-Z]{1})([a-z]+){1}(|\s)$/g;
+
+    if (
+      title &&
+      title.length >= 5 &&
+      title.length < 100 &&
+      tag &&
+      tag.length < 30 &&
+      author &&
+      upperCaseLetter.test(author) &&
+      imgUrl &&
+      regexJpg.test(imgUrl) &&
+      saying &&
+      content
+    ) {
+      this.setState({ valid: true });
+    } else {
+      this.setState({ valid: false });
+    }
+
+    if (!title) {
+      errors.push("Please insert the title of your article!");
+    }
+    if (title.length < 5) {
+      errors.push("The title must be at least 5 characters long!");
+    }
+    if (!tag) {
+      errors.push("Please insert the tag of your article!");
+    }
+    if (tag.length > 30) {
+      errors.push("Please keep your tag under 30 characters!");
+    }
+    if (!author) {
+      errors.push("Please insert the author of your article!");
+    }
+    if (!upperCaseLetter.test(author)) {
+      errors.push(
+        "Please use capital letters for the author's first and last name!"
+      );
+    }
+    if (!imgUrl) {
+      errors.push("Please insert an image url!");
+    }
+    if (!regexJpg.test(imgUrl)) {
+      errors.push(
+        "Please insert an image with jpg/jpeg/png/bmp/gif extension!"
+      );
+    }
+    if (!saying) {
+      errors.push("Please insert the main saying of your article!");
+    }
+    if (!content) {
+      errors.push("Please insert the content of your article!");
+    }
+
+    if (!this.state.valid) {
+      this.setState({ errors: errors });
+    }
   }
 
   postArticle(article) {
@@ -105,21 +177,39 @@ class ModalAddArticle extends Component {
         <button
           type="button"
           className="button close-modal"
-          onClick={() => this.props.closeModal("add")}
+          onClick={() => {
+            this.props.closeModal("add");
+            this.resetForm();
+          }}
         >
           Cancel
         </button>
-        <button
-          type="button"
-          className="button button--pink"
-          onClick={() => {
-            // this.props.openModal("success");
-            this.props.closeModal("add");
-            this.postArticle(this.state);
-          }}
-        >
-          Save
-        </button>
+        {this.state.valid ? (
+          <button
+            type="button"
+            className="button button--pink"
+            onClick={() => {
+              // this.props.openModal("success");
+              this.props.closeModal("add");
+              this.postArticle(this.state);
+            }}
+          >
+            Save
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="button button--disabled"
+            disabled
+            onClick={() => {
+              // this.props.openModal("success");
+              this.props.closeModal("add");
+              this.postArticle(this.state);
+            }}
+          >
+            Save
+          </button>
+        )}
       </>
     ) : this.props.showModalEdit ? (
       <>
@@ -133,18 +223,34 @@ class ModalAddArticle extends Component {
         >
           Cancel
         </button>
-        <button
-          type="button"
-          className="button button--pink"
-          onClick={() => {
-            // this.props.openModal("success");
-            this.props.sendEditedArticle(this.state);
-            this.props.closeModal("edit");
-            this.resetForm();
-          }}
-        >
-          Edit
-        </button>
+        {this.state.valid ? (
+          <button
+            type="button"
+            className="button button--pink"
+            onClick={() => {
+              // this.props.openModal("success");
+              this.props.sendEditedArticle(this.state);
+              this.props.closeModal("edit");
+              this.resetForm();
+            }}
+          >
+            Edit
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="button button--disabled"
+            disabled
+            onClick={() => {
+              // this.props.openModal("success");
+              this.props.sendEditedArticle(this.state);
+              this.props.closeModal("edit");
+              this.resetForm();
+            }}
+          >
+            Edit
+          </button>
+        )}
       </>
     ) : null;
 
@@ -154,15 +260,22 @@ class ModalAddArticle extends Component {
           <div className="modal__content">
             <h2 className="title modal-title">{renderTitle}</h2>
             <div className="inputs__container">
-              <input
-                type="text"
-                className="input margin"
-                id="title"
-                placeholder="Please enter title"
-                name="title"
-                value={this.state.title}
-                onChange={this.handleChange}
-              ></input>
+              <div>
+                <input
+                  type="text"
+                  className="input margin"
+                  id="title"
+                  placeholder="Please enter title"
+                  name="title"
+                  value={this.state.title}
+                  onChange={this.handleChange}
+                ></input>
+                {!this.state.title ? (
+                  <p className="input-error">
+                    Please insert the title of your article!
+                  </p>
+                ) : null}
+              </div>
               <input
                 type="text"
                 className="input"
@@ -224,7 +337,9 @@ class ModalAddArticle extends Component {
 
             <div className="modal__buttons">{renderButtonSaveEdit}</div>
           </div>
-          <div id="error-modal"></div>
+          <div id="error-modal">
+            {!this.state.valid ? this.state.errors[0] : ""}
+          </div>
         </div>
       </div>
     );
