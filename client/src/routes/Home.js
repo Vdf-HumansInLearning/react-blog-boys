@@ -194,7 +194,7 @@ class Home extends Component {
           <Loader />
         ) : (
           <>
-            <SuccessAlert showSuccessMessage={this.props.showSuccessMessage} />
+            <SuccessAlert showSuccessMessage={showSuccessMessage} />
             <Navbar />
             <AddArticle
               showModalAddArticle={showModalAddArticle}
@@ -219,6 +219,8 @@ class Home extends Component {
               sendEditedArticle={this.sendEditedArticle}
               showModalEdit={showModalEdit}
               article={this.state.selectedArticleToEdit}
+              openModal={this.openModal}
+              showSuccessMessage={showSuccessMessage}
             />
             <ModalDelete
               showModalDelete={this.state.showModalDelete}

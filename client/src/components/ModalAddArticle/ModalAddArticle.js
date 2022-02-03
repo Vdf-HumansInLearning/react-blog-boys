@@ -179,7 +179,7 @@ class ModalAddArticle extends Component {
             type="button"
             className="button button--pink"
             onClick={() => {
-              // this.props.openModal("success");
+              this.props.openModal("success");
               this.props.closeModal("add");
               this.postArticle(this.state);
             }}
@@ -187,16 +187,7 @@ class ModalAddArticle extends Component {
             Save
           </button>
         ) : (
-          <button
-            type="button"
-            className="button button--disabled"
-            disabled
-            onClick={() => {
-              // this.props.openModal("success");
-              this.props.closeModal("add");
-              this.postArticle(this.state);
-            }}
-          >
+          <button type="button" className="button button--disabled" disabled>
             Save
           </button>
         )}
@@ -218,7 +209,7 @@ class ModalAddArticle extends Component {
             type="button"
             className="button button--pink"
             onClick={() => {
-              // this.props.openModal("success");
+              this.props.openModal("success");
               this.props.sendEditedArticle(this.state);
               this.props.closeModal("edit");
               this.resetForm();
@@ -227,17 +218,7 @@ class ModalAddArticle extends Component {
             Edit
           </button>
         ) : (
-          <button
-            type="button"
-            className="button button--disabled"
-            disabled
-            onClick={() => {
-              // this.props.openModal("success");
-              this.props.sendEditedArticle(this.state);
-              this.props.closeModal("edit");
-              this.resetForm();
-            }}
-          >
+          <button type="button" className="button button--disabled" disabled>
             Edit
           </button>
         )}
