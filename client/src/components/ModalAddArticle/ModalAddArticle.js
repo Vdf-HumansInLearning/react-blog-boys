@@ -24,7 +24,7 @@ class ModalAddArticle extends Component {
       saying: "",
       content: "",
       valid: false,
-      errors: [],
+      error: "",
     };
     this.handleChange = this.handleChange.bind(this);
     this.resetForm = this.resetForm.bind(this);
@@ -69,7 +69,7 @@ class ModalAddArticle extends Component {
       saying: "",
       content: "",
       valid: false,
-      errors: [],
+      error: "",
     });
   }
 
@@ -88,9 +88,9 @@ class ModalAddArticle extends Component {
 
   validateModal() {
     let { title, imgUrl, content, tag, author, saying } = this.state;
-    let errors = [];
+    let error;
     let regexJpg = /\.(jpe?g|png|gif|bmp)$/i;
-    let upperCaseLetter = /([A-Z]{1})([a-z]+)(\s)([A-Z]{1})([a-z]+){1}(|\s)$/g;
+    let upperCaseLetter = /^[A-Z]/;
 
     if (
       title &&
@@ -111,42 +111,32 @@ class ModalAddArticle extends Component {
     }
 
     if (!title) {
-      errors.push("Please insert the title of your article!");
-    }
-    if (title.length < 5) {
-      errors.push("The title must be at least 5 characters long!");
-    }
-    if (!tag) {
-      errors.push("Please insert the tag of your article!");
-    }
-    if (tag.length > 30) {
-      errors.push("Please keep your tag under 30 characters!");
-    }
-    if (!author) {
-      errors.push("Please insert the author of your article!");
-    }
-    if (!upperCaseLetter.test(author)) {
-      errors.push(
-        "Please use capital letters for the author's first and last name!"
-      );
-    }
-    if (!imgUrl) {
-      errors.push("Please insert an image url!");
-    }
-    if (!regexJpg.test(imgUrl)) {
-      errors.push(
-        "Please insert an image with jpg/jpeg/png/bmp/gif extension!"
-      );
-    }
-    if (!saying) {
-      errors.push("Please insert the main saying of your article!");
-    }
-    if (!content) {
-      errors.push("Please insert the content of your article!");
+      error = "Please insert the title of your article!";
+    } else if (title.length < 5) {
+      error = "The title must be at least 5 characters long!";
+    } else if (!tag) {
+      error = "Please insert the tag of your article!";
+    } else if (tag.length > 30) {
+      error = "Please keep your tag under 30 characters!";
+    } else if (!author) {
+      error = "Please insert the author of your article!";
+    } else if (!upperCaseLetter.test(author)) {
+      error =
+        "Please use capital letters for the author's first and last name!";
+    } else if (!imgUrl) {
+      error = "Please insert an image url!";
+    } else if (!regexJpg.test(imgUrl)) {
+      error = "Please insert an image with jpg/jpeg/png/bmp/gif extension!";
+    } else if (!saying) {
+      error = "Please insert the main saying of your article!";
+    } else if (!content) {
+      error = "Please insert the content of your article!";
+    } else {
+      error = "Please check that all fields are filled in correctly";
     }
 
     if (!this.state.valid) {
-      this.setState({ errors: errors });
+      this.setState({ error: error });
     }
   }
 
@@ -260,22 +250,15 @@ class ModalAddArticle extends Component {
           <div className="modal__content">
             <h2 className="title modal-title">{renderTitle}</h2>
             <div className="inputs__container">
-              <div>
-                <input
-                  type="text"
-                  className="input margin"
-                  id="title"
-                  placeholder="Please enter title"
-                  name="title"
-                  value={this.state.title}
-                  onChange={this.handleChange}
-                ></input>
-                {!this.state.title ? (
-                  <p className="input-error">
-                    Please insert the title of your article!
-                  </p>
-                ) : null}
-              </div>
+              <input
+                type="text"
+                className="input margin"
+                id="title"
+                placeholder="Please enter title"
+                name="title"
+                value={this.state.title}
+                onChange={this.handleChange}
+              ></input>
               <input
                 type="text"
                 className="input"
@@ -294,7 +277,6 @@ class ModalAddArticle extends Component {
                 value={this.state.author}
                 onChange={this.handleChange}
               ></input>
-
               <input
                 type="text"
                 className="input"
@@ -338,7 +320,7 @@ class ModalAddArticle extends Component {
             <div className="modal__buttons">{renderButtonSaveEdit}</div>
           </div>
           <div id="error-modal">
-            {!this.state.valid ? this.state.errors[0] : ""}
+            {!this.state.valid ? this.state.error : ""}
           </div>
         </div>
       </div>
