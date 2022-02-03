@@ -6,7 +6,7 @@ import "./../Home.css";
 import FooterLinks from "./../components/FooterLinks/FooterLinks";
 import SuccessAlert from "../components/SuccessAlert/SuccessAlert";
 import ModalAddArticle from "../components/ModalAddArticle/ModalAddArticle";
-import ModalAlert from "../components/ModalAlert/ModalAlert";
+import ModalDelete from "../components/ModalDelete/ModalDelete";
 import Article from "../components/Article/Article";
 import Loader from "../components/Loader/Loader";
 
@@ -15,7 +15,7 @@ class Home extends Component {
     super(props);
     this.state = {
       showModalAddArticle: false,
-      showModalAlert: false,
+      showModalDelete: false,
       showSuccessMessage: false,
       showModalEdit: false,
       articlesList: [],
@@ -42,7 +42,7 @@ class Home extends Component {
       this.setState({ showModalAddArticle: true });
     }
     if (option === "alert") {
-      this.setState({ showModalAlert: true, idToDelete: id });
+      this.setState({ showModalDelete: true, idToDelete: id });
     }
     if (option === "success") {
       this.setState({ showSuccessMessage: true });
@@ -57,7 +57,7 @@ class Home extends Component {
       this.setState({ showModalAddArticle: false });
     }
     if (option === "alert") {
-      this.setState({ showModalAlert: false });
+      this.setState({ showModalDelete: false });
     }
     if (option === "edit") {
       this.setState({ showModalEdit: false });
@@ -170,7 +170,7 @@ class Home extends Component {
 
   render() {
     const showModalAddArticle = this.state.showModalAddArticle;
-    const showModalAlert = this.state.showModalAlert;
+    const showModalDelete = this.state.showModalDelete;
     const showSuccessMessage = this.state.showSuccessMessage;
     const showModalEdit = this.state.showModalEdit;
 
@@ -180,7 +180,7 @@ class Home extends Component {
         article={article}
         id={article.id}
         key={article.id}
-        showModalAlert={showModalAlert}
+        showModalDelete={showModalDelete}
         showModalEdit={showModalEdit}
         openModal={this.openModal}
         closeModal={this.closeModal}
@@ -220,8 +220,8 @@ class Home extends Component {
               showModalEdit={showModalEdit}
               article={this.state.selectedArticleToEdit}
             />
-            <ModalAlert
-              showModalAlert={this.state.showModalAlert}
+            <ModalDelete
+              showModalDelete={this.state.showModalDelete}
               closeModal={this.closeModal}
               deleteArticle={this.deleteArticle}
             />

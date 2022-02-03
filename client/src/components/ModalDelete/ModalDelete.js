@@ -1,14 +1,14 @@
 import React from "react";
 import { Component } from "react/cjs/react.production.min";
-import "./ModalAlert.css";
+import "./ModalDelete.css";
 
-class ModalAlert extends Component {
+class ModalDelete extends Component {
   constructor(props) {
     super(props);
     props = this.props;
   }
   render() {
-    if (this.props.showModalAlert) {
+    if (this.props.showModalDelete) {
       return (
         <div id="modal-alert" className="modal__overlay__alert">
           <div id="div-modal-alert" className="delete-modal-alert">
@@ -46,4 +46,4 @@ class ModalAlert extends Component {
   }
 }
 
-export default ModalAlert;
+export default ModalDelete;
