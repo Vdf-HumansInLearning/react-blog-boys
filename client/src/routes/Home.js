@@ -25,6 +25,8 @@ class Home extends Component {
       indexStart: 0,
       indexEnd: 3,
       totalNumberOfArticles: 0,
+      isToastShown: false,
+      toastContent: "",
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -35,6 +37,12 @@ class Home extends Component {
     this.handlePrevious = this.handlePrevious.bind(this);
     this.editArticle = this.editArticle.bind(this);
     this.sendEditedArticle = this.sendEditedArticle.bind(this);
+    this.showToast = this.showToast.bind(this);
+  }
+
+  showToast(toastContent) {
+    this.setState({ isToastShown: true, toastContent: toastContent });
+    setTimeout(() => this.setState({ isToastShown: false }), 5000);
   }
 
   openModal(option, id) {
@@ -141,6 +149,7 @@ class Home extends Component {
     }).then((res) => {
       if (res.status === 200) {
         this.renderArticles(this);
+        this.showToast("This article has been edited successfully!");
       }
     });
   }
@@ -194,7 +203,11 @@ class Home extends Component {
           <Loader />
         ) : (
           <>
-            <SuccessAlert showSuccessMessage={showSuccessMessage} />
+            <SuccessAlert
+              showSuccessMessage={showSuccessMessage}
+              isToastShown={this.state.isToastShown}
+              toastContent={this.state.toastContent}
+            />
             <Navbar />
             <AddArticle
               showModalAddArticle={showModalAddArticle}
@@ -221,6 +234,7 @@ class Home extends Component {
               article={this.state.selectedArticleToEdit}
               openModal={this.openModal}
               showSuccessMessage={showSuccessMessage}
+              showToast={this.showToast}
             />
             <ModalDelete
               showModalDelete={this.state.showModalDelete}

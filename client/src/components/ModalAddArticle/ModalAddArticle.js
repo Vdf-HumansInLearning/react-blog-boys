@@ -151,6 +151,7 @@ class ModalAddArticle extends Component {
     }).then((res) => {
       if (res.status === 200) {
         this.resetForm();
+        this.props.showToast("This article has been created!");
       }
     });
   }
