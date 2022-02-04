@@ -11,6 +11,7 @@
   --moon: #9b9b9b;
   --sun: #fff;
   --disabled-color: #e6e6e6;
+  --background-image: url("/public/img/Valley-light.jpg");
 }
 
 [data-theme="dark"] {
@@ -22,6 +23,11 @@
   --moon: #1a1a1f;
   --sun: #9b9b9b;
   --disabled-color: #494e5c;
+  --background-image: url("/public/img/Valley-dark.jpg");
+}
+
+.img-theme{
+    background-image: var(--background-image);
 }
 
 body {
@@ -82,14 +88,6 @@ body {
     background: #f83d00;
     color: white;
     border: none;
-}
-
-.img-dark {
-    background-image: url("/public/img/Valley-dark.jpg");
-}
-
-.img-light {
-    background-image: url("/public/img/Valley-light.jpg");
 }
 
 @media (max-width: 768px) {

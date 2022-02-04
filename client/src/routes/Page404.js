@@ -16,8 +16,10 @@ class Page404 extends Component {
     const currentTheme = localStorage.getItem("theme")
       ? localStorage.getItem("theme")
       : null;
+
     const currentImg = currentTheme === "dark" ? "img-dark" : "img-light";
-    this.setState({ currentTheme: currentTheme, currentImg: currentImg });
+    this.setState({ currentTheme: currentTheme, currentImg: currentImg }
+    );
   }
 
   render() {
@@ -28,10 +30,7 @@ class Page404 extends Component {
         ) : (
           <>
             <Navbar />
-            <div
-              className={"error-box " + this.state.currentImg}
-              id="error-box"
-            >
+            <div className="error-box img-theme" id="error-box">
               <div className="error-info">
                 <h1 className="error-message">Error 404 - Page not found!</h1>
                 <a href="/">
