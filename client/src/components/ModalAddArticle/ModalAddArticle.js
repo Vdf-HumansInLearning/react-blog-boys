@@ -32,8 +32,18 @@ class ModalAddArticle extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (
+      this.props.showModalAddArticle &&
+      this.props.showModalAddArticle !== prevProps.showModalAddArticle
+    ) {
+      this.resetForm();
+    }
+
     const article = this.props.article;
-    if (article && article !== prevProps.article) {
+    if (
+      this.props.showModalEdit &&
+      this.props.showModalEdit !== prevProps.showModalEdit
+    ) {
       this.setState({
         id: article.id,
         title: article.title,
@@ -170,7 +180,7 @@ class ModalAddArticle extends Component {
           className="button close-modal"
           onClick={() => {
             this.props.closeModal("add");
-            this.resetForm();
+            // this.resetForm();
           }}
         >
           Cancel
@@ -200,7 +210,7 @@ class ModalAddArticle extends Component {
           className="button close-modal"
           onClick={() => {
             this.props.closeModal("edit");
-            this.resetForm();
+            // this.resetForm();
           }}
         >
           Cancel
@@ -213,7 +223,7 @@ class ModalAddArticle extends Component {
               this.props.openModal("success");
               this.props.sendEditedArticle(this.state);
               this.props.closeModal("edit");
-              this.resetForm();
+              // this.resetForm();
             }}
           >
             Edit
@@ -307,6 +317,7 @@ class ModalAddArticle extends Component {
         </div>
       </div>
     );
+
     return this.props.showModalAddArticle || this.props.showModalEdit
       ? renderModal
       : null;
