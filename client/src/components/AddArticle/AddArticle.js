@@ -1,6 +1,5 @@
 import React from "react";
 import { Component } from "react/cjs/react.production.min";
-import ModalAddArticle from "../ModalAddArticle/ModalAddArticle";
 import "./AddArticle.css";
 
 class AddArticle extends Component {
@@ -18,12 +17,6 @@ class AddArticle extends Component {
           >
             Add Article
           </button>
-          <ModalAddArticle
-            showModalAddArticle={this.props.showModalAddArticle}
-            closeModal={this.props.closeModal}
-            openModal={this.props.openModal}
-            showSuccessMessage={this.props.showSuccessMessage}
-          />
         </div>
       </div>
     );

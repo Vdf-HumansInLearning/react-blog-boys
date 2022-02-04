@@ -235,6 +235,7 @@ class Home extends Component {
               openModal={this.openModal}
               showSuccessMessage={showSuccessMessage}
               showToast={this.showToast}
+              renderArticles={this.renderArticles}
             />
             <ModalDelete
               showModalDelete={this.state.showModalDelete}
