@@ -61,11 +61,7 @@ class ModalAddArticle extends Component {
   resetForm() {
     const today = new Date();
     const date =
-      today.getDate() +
-      "-" +
-      parseInt(today.getMonth() + 1) +
-      "-" +
-      today.getFullYear();
+      today.toLocaleString('default', { month: 'long' }) + " " + today.getDate() + ", " + today.getFullYear();
 
     this.setState({
       ...this.state,
@@ -170,8 +166,8 @@ class ModalAddArticle extends Component {
     const renderTitle = this.props.showModalAddArticle
       ? "Add Article"
       : this.props.showModalEdit
-      ? "Edit article"
-      : null;
+        ? "Edit article"
+        : null;
 
     const renderButtonSaveEdit = this.props.showModalAddArticle ? (
       <>
