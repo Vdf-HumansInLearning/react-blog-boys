@@ -4,7 +4,6 @@ import "./Navbar.css";
 
 function Navbar() {
   const nav = ["home", "reviews", "about", "contact"];
-
   return (
     <>
       <DarkModeButton />

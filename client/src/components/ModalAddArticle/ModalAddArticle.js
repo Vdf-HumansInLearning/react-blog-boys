@@ -1,10 +1,96 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import "./ModalAddArticle.css";
 
-class ModalAddArticle extends Component {
-  constructor(props) {
-    super(props);
+const ModalAddArticle = (props) => {
+  const showModalAddArticle = props.showModalAddArticle;
+  const article = props.article;
+  const showModalEdit = props.showModalEdit;
+  const renderArticles = props.renderArticles;
+  const showToast = props.showToast;
+  const closeModal = props.closeModal;
+  const openModal = props.openModal;
+  const sendEditedArticle = props.sendEditedArticle;
 
+  const today = new Date();
+  const date =
+    today.toLocaleString("default", { month: "long" }) +
+    "-" +
+    today.getDate() +
+    "-" +
+    today.getFullYear();
+
+  const [id, setId] = useState(null);
+  const [title, setTitle] = useState("");
+  const [tag, setTag] = useState("");
+  const [author, setAuthor] = useState("");
+  const [imgUrl, setImgUrl] = useState("");
+  // const [imgAlt, setImgAlt] = useState("");
+  const [saying, setSaying] = useState("");
+  const [content, setContent] = useState("");
+  const [valid, setValid] = useState(false);
+  const [error, setError] = useState("");
+  const [articleE, setArticleE] = useState("");
+
+  // const articleToSend = {
+  //   id: articleE.id,
+  //   title: articleE.title,
+  //   tag: articleE.tag,
+  //   author: articleE.author,
+  //   date: date,
+  //   imgUrl: articleE.imgUrl,
+  //   saying: articleE.saying,
+  //   content: articleE.content,
+  //   valid: articleE.valid,
+  //   error: error,
+  // };
+
+  useEffect(() => {
+    setArticleE(props.article);
+  }, [props]);
+
+  useEffect(() => {
+    resetForm();
+  }, [props.showModalAddArticle]);
+
+  const [articleToReset, setArticleToReset] = useState({
+    id: "",
+    title: "",
+    tag: "",
+    author: "",
+    date: "",
+    imgUrl: "",
+    imgAlt: "",
+    content: "",
+    saying: "",
+  });
+
+  // function componentDidUpdate(prevProps) {
+  //     if (
+  //       showModalAddArticle &&
+  //       showModalAddArticle !== prevProps.showModalAddArticle
+  //     ) {
+  //       this.resetForm();
+  //     }
+
+  //     if (
+  //       showModalEdit &&
+  //       showModalEdit !== prevProps.showModalEdit
+  //     ) {
+  //       this.setState({
+  //         id: article.id,
+  //         title: article.title,
+  //         tag: article.tag,
+  //         author: article.author,
+  //         date: article.date,
+  //         imgUrl: article.imgUrl,
+  //         imgAlt: article.imgAlt,
+  //         saying: article.saying,
+  //         content: article.content,
+  //       });
+  //     }
+  //   }
+
+  function resetForm() {
     const today = new Date();
     const date =
       today.getDate() +
@@ -13,144 +99,102 @@ class ModalAddArticle extends Component {
       "-" +
       today.getFullYear();
 
-    this.state = {
-      id: null,
-      title: "",
-      tag: "",
-      author: "",
-      date: date,
-      imgUrl: "",
-      imgAlt: "",
-      saying: "",
-      content: "",
-      valid: false,
-      error: "",
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.resetForm = this.resetForm.bind(this);
-    this.validateModal = this.validateModal.bind(this);
+    setArticleToReset(articleToReset);
+
+    // this.setState({
+    //   ...this.state,
+    //   id: null,
+    //   title: "",
+    //   tag: "",
+    //   author: "",
+    //   date: date,
+    //   imgUrl: "",
+    //   imgAlt: "",
+    //   saying: "",
+    //   content: "",
+    //   valid: false,
+    //   error: "",
+    // });
+
+    // function handleChange(event) {
+    //   const target = event.target;
+    //   const value = target.value;
+    //   const name = target.name;
+    // this.setState({...this.state,
+    //     [name]: value},
+    //   validateModal
+    // );
+    // validateModal()
   }
 
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.showModalAddArticle &&
-      this.props.showModalAddArticle !== prevProps.showModalAddArticle
-    ) {
-      this.resetForm();
-    }
-
-    const article = this.props.article;
-    if (
-      this.props.showModalEdit &&
-      this.props.showModalEdit !== prevProps.showModalEdit
-    ) {
-      this.setState({
-        id: article.id,
-        title: article.title,
-        tag: article.tag,
-        author: article.author,
-        date: article.date,
-        imgUrl: article.imgUrl,
-        imgAlt: article.imgAlt,
-        saying: article.saying,
-        content: article.content,
-      });
-    }
-  }
-
-  resetForm() {
-    const today = new Date();
-    const date =
-      today.getDate() +
-      "-" +
-      parseInt(today.getMonth() + 1) +
-      "-" +
-      today.getFullYear();
-
-    this.setState({
-      ...this.state,
-      id: null,
-      title: "",
-      tag: "",
-      author: "",
-      date: date,
-      imgUrl: "",
-      imgAlt: "",
-      saying: "",
-      content: "",
-      valid: false,
-      error: "",
-    });
-  }
-
-  handleChange(event) {
-    const target = event.target;
+  const handleChange = (e) => {
+    const target = e.target;
     const value = target.value;
     const name = target.name;
-    this.setState(
-      {
-        ...this.state,
+    setArticleE((prevArticle) => {
+      return {
+        ...prevArticle,
         [name]: value,
-      },
-      this.validateModal
-    );
-  }
+      };
+    });
+    validateModal();
+  };
 
-  validateModal() {
-    let { title, imgUrl, content, tag, author, saying } = this.state;
+  function validateModal() {
+    // let { title, imgUrl, content, tag, author, saying } = this.state;
     let error;
     let regexJpg = /\.(jpe?g|png|gif|bmp)$/i;
     let upperCaseLetter = /^[A-Z]/;
 
     if (
-      title &&
-      title.length >= 5 &&
-      title.length < 100 &&
-      tag &&
-      tag.length < 30 &&
-      author &&
-      upperCaseLetter.test(author) &&
-      imgUrl &&
-      regexJpg.test(imgUrl) &&
-      saying &&
-      content
+      articleE.title &&
+      articleE.title.length >= 5 &&
+      articleE.title.length < 100 &&
+      articleE.tag &&
+      articleE.tag.length < 30 &&
+      articleE.author &&
+      upperCaseLetter.test(articleE.author) &&
+      articleE.imgUrl &&
+      regexJpg.test(articleE.imgUrl) &&
+      articleE.saying &&
+      articleE.content
     ) {
-      this.setState({ valid: true });
+      setValid(true);
     } else {
-      this.setState({ valid: false });
+      setValid(false);
     }
 
-    if (!title) {
+    if (!articleE.title) {
       error = "Please insert the title of your article!";
-    } else if (title.length < 5) {
+    } else if (articleE.title.length < 5) {
       error = "The title must be at least 5 characters long!";
-    } else if (!tag) {
+    } else if (!articleE.tag) {
       error = "Please insert the tag of your article!";
-    } else if (tag.length > 30) {
+    } else if (articleE.tag.length > 30) {
       error = "Please keep your tag under 30 characters!";
-    } else if (!author) {
+    } else if (!articleE.author) {
       error = "Please insert the author of your article!";
-    } else if (!upperCaseLetter.test(author)) {
+    } else if (!upperCaseLetter.test(articleE.author)) {
       error =
         "Please use capital letters for the author's first and last name!";
-    } else if (!imgUrl) {
+    } else if (!articleE.imgUrl) {
       error = "Please insert an image url!";
-    } else if (!regexJpg.test(imgUrl)) {
+    } else if (!regexJpg.test(articleE.imgUrl)) {
       error = "Please insert an image with jpg/jpeg/png/bmp/gif extension!";
-    } else if (!saying) {
+    } else if (!articleE.saying) {
       error = "Please insert the main saying of your article!";
-    } else if (!content) {
+    } else if (!articleE.content) {
       error = "Please insert the content of your article!";
     } else {
       error = "Please check that all fields are filled in correctly";
     }
 
-    if (!this.state.valid) {
-      this.setState({ error: error });
+    if (!valid) {
+      setError({ error: error });
     }
   }
 
-  postArticle(article) {
+  function postArticle(article) {
     fetch("http://localhost:3007/articles", {
       headers: {
         Accept: "application/json",
@@ -160,83 +204,80 @@ class ModalAddArticle extends Component {
       body: JSON.stringify(article),
     }).then((res) => {
       if (res.status === 200) {
-        this.props.renderArticles(this);
-        this.props.showToast("This article has been created!");
+        renderArticles();
+        showToast("This article has been created!");
       }
     });
   }
 
-  render() {
-    const renderTitle = this.props.showModalAddArticle
-      ? "Add Article"
-      : this.props.showModalEdit
-      ? "Edit article"
-      : null;
+  const renderTitle = showModalAddArticle
+    ? "Add Article"
+    : showModalEdit
+    ? "Edit article"
+    : null;
 
-    const renderButtonSaveEdit = this.props.showModalAddArticle ? (
-      <>
+  const renderButtonSaveEdit = showModalAddArticle ? (
+    <>
+      <button
+        type="button"
+        className="button close-modal"
+        onClick={() => {
+          closeModal("add");
+        }}
+      >
+        Cancel
+      </button>
+      {valid ? (
         <button
           type="button"
-          className="button close-modal"
+          className="button button--pink"
           onClick={() => {
-            this.props.closeModal("add");
-            // this.resetForm();
+            openModal("success");
+            closeModal("add");
+            // postArticle(articleToSend);
           }}
         >
-          Cancel
+          Save
         </button>
-        {this.state.valid ? (
-          <button
-            type="button"
-            className="button button--pink"
-            onClick={() => {
-              this.props.openModal("success");
-              this.props.closeModal("add");
-              this.postArticle(this.state);
-            }}
-          >
-            Save
-          </button>
-        ) : (
-          <button type="button" className="button button--disabled" disabled>
-            Save
-          </button>
-        )}
-      </>
-    ) : this.props.showModalEdit ? (
-      <>
+      ) : (
+        <button type="button" className="button button--disabled" disabled>
+          Save
+        </button>
+      )}
+    </>
+  ) : showModalEdit ? (
+    <>
+      <button
+        type="button"
+        className="button close-modal"
+        onClick={() => {
+          closeModal("edit");
+        }}
+      >
+        Cancel
+      </button>
+      {valid ? (
         <button
           type="button"
-          className="button close-modal"
+          className="button button--pink"
           onClick={() => {
-            this.props.closeModal("edit");
-            // this.resetForm();
+            openModal("success");
+            // sendEditedArticle(articleToSend);
+            closeModal("edit");
           }}
         >
-          Cancel
+          Edit
         </button>
-        {this.state.valid ? (
-          <button
-            type="button"
-            className="button button--pink"
-            onClick={() => {
-              this.props.openModal("success");
-              this.props.sendEditedArticle(this.state);
-              this.props.closeModal("edit");
-              // this.resetForm();
-            }}
-          >
-            Edit
-          </button>
-        ) : (
-          <button type="button" className="button button--disabled" disabled>
-            Edit
-          </button>
-        )}
-      </>
-    ) : null;
+      ) : (
+        <button type="button" className="button button--disabled" disabled>
+          Edit
+        </button>
+      )}
+    </>
+  ) : null;
 
-    const renderModal = (
+  if ((showModalAddArticle || showModalEdit) && props.article) {
+    return (
       <div id="modal-box" className="modal__overlay">
         <div className="add-modal">
           <div className="modal__content">
@@ -248,8 +289,11 @@ class ModalAddArticle extends Component {
                 id="title"
                 placeholder="Please enter title"
                 name="title"
-                value={this.state.title}
-                onChange={this.handleChange}
+                value={articleE.title}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  validateModal();
+                }}
               ></input>
               <input
                 type="text"
@@ -257,8 +301,8 @@ class ModalAddArticle extends Component {
                 id="tag"
                 placeholder="Please enter tag"
                 name="tag"
-                value={this.state.tag}
-                onChange={this.handleChange}
+                value={articleE.tag}
+                onChange={handleChange}
               ></input>
               <input
                 type="text"
@@ -266,8 +310,8 @@ class ModalAddArticle extends Component {
                 id="author"
                 placeholder="Please enter author"
                 name="author"
-                value={this.state.author}
-                onChange={this.handleChange}
+                value={articleE.author}
+                onChange={handleChange}
               ></input>
               <input
                 type="text"
@@ -275,8 +319,7 @@ class ModalAddArticle extends Component {
                 id="date"
                 placeholder="Current date"
                 name="date"
-                value={this.state.date}
-                onChange={this.handleChange}
+                value={date}
                 disabled
               ></input>
               <input
@@ -285,8 +328,8 @@ class ModalAddArticle extends Component {
                 id="url"
                 placeholder="Please enter image url"
                 name="imgUrl"
-                value={this.state.imgUrl}
-                onChange={this.handleChange}
+                value={articleE.imgUrl}
+                onChange={handleChange}
               ></input>
               <input
                 type="text"
@@ -294,8 +337,8 @@ class ModalAddArticle extends Component {
                 id="saying"
                 placeholder="Please enter saying"
                 name="saying"
-                value={this.state.saying}
-                onChange={this.handleChange}
+                value={articleE.saying}
+                onChange={handleChange}
               ></input>
             </div>
             <textarea
@@ -305,23 +348,19 @@ class ModalAddArticle extends Component {
               cols="28"
               rows="7"
               placeholder="Please enter content"
-              value={this.state.content}
-              onChange={this.handleChange}
+              value={articleE.content}
+              onChange={handleChange}
             ></textarea>
 
             <div className="modal__buttons">{renderButtonSaveEdit}</div>
           </div>
-          <div id="error-modal">
-            {!this.state.valid ? this.state.error : ""}
-          </div>
+          <div id="error-modal">{!valid ? error : ""}</div>
         </div>
       </div>
     );
-
-    return this.props.showModalAddArticle || this.props.showModalEdit
-      ? renderModal
-      : null;
+  } else {
+    return null;
   }
-}
+};
 
 export default ModalAddArticle;

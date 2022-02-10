@@ -1,26 +1,35 @@
 import React from "react";
 import "./FooterLinks.css";
 
-function FooterLinks(props) {
-  if (props.route === "home") {
+function FooterLinks({
+  route,
+  indexStart,
+  handlePrevious,
+  indexEnd,
+  totalNumberOfArticles,
+  handleNext,
+  previousArticle,
+  nextArticle,
+}) {
+  if (route === "home") {
     return (
       <footer className="footer next-button-class">
-        {props.indexStart !== 0 ? (
+        {indexStart !== 0 ? (
           <button
             className="footer__link footer__link--previous"
             id="button-prev"
-            onClick={props.handlePrevious}
+            onClick={handlePrevious}
           >
             previous
           </button>
         ) : (
           <span></span>
         )}
-        {props.indexEnd < props.totalNumberOfArticles - 1 ? (
+        {indexEnd < totalNumberOfArticles - 1 ? (
           <button
             className="footer__link footer__link--next"
             id="button-next"
-            onClick={props.handleNext}
+            onClick={handleNext}
           >
             next
           </button>
@@ -30,11 +39,11 @@ function FooterLinks(props) {
       </footer>
     );
   }
-  if (props.route === "details") {
+  if (route === "details") {
     return (
       <footer className="footer next-button-class">
-        {props.previousArticle ? (
-          <a className="anchor__link" href={props.previousArticle}>
+        {previousArticle ? (
+          <a className="anchor__link" href={previousArticle}>
             <button
               className="footer__link footer__link--previous"
               id="button-prev"
@@ -45,8 +54,8 @@ function FooterLinks(props) {
         ) : (
           <span></span>
         )}
-        {props.nextArticle ? (
-          <a className="anchor__link" href={props.nextArticle}>
+        {nextArticle ? (
+          <a className="anchor__link" href={nextArticle}>
             <button
               className="footer__link footer__link--next"
               id="button-next"

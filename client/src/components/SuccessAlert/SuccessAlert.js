@@ -1,21 +1,18 @@
 import React from "react";
-import { Component } from "react/cjs/react.production.min";
 import "./SuccessAlert.css";
 
-class SuccessAlert extends Component {
-  render() {
-    if (this.props.showSuccessMessage && this.props.isToastShown) {
-      return (
-        <div id="static">
-          <div className="alert alert-success" role="alert">
-            {this.props.toastContent}
-          </div>
+const SuccessAlert = ({ showSuccessMessage, isToastShown, toastContent }) => {
+  if (showSuccessMessage && isToastShown) {
+    return (
+      <div id="static">
+        <div className="alert alert-success" role="alert">
+          {toastContent}
         </div>
-      );
-    } else {
-      return null;
-    }
+      </div>
+    );
+  } else {
+    return null;
   }
-}
+};
 
 export default SuccessAlert;

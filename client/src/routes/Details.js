@@ -1,5 +1,4 @@
-import React from "react";
-import { Component } from "react/cjs/react.production.min";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import ArticleDetails from "./../components/ArticleDetails/ArticleDetails";
 import FooterLinks from "./../components/FooterLinks/FooterLinks";
@@ -7,69 +6,57 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader/Loader";
 
-class Details extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      article: {
-        id: "",
-        title: "",
-        tag: "",
-        author: "",
-        date: "",
-        imgUrl: "",
-        imgAlt: "",
-        content: "",
-        saying: "",
-      },
-    };
-  }
+const Details = (props) => {
+  const [article, setArticle] = useState({
+    id: "",
+    title: "",
+    tag: "",
+    author: "",
+    date: "",
+    imgUrl: "",
+    imgAlt: "",
+    content: "",
+    saying: "",
+  });
 
-  componentDidMount() {
-    const self = this;
-    const { id } = this.props.params;
-
-    fetch("http://localhost:3007/articles/" + id)
+  useEffect(() => {
+    fetch("http://localhost:3007/articles/" + props.params.id)
       .then(function (response) {
         if (response.status !== 200) {
           console.log(
             "Looks like there was a problem. Status Code: " + response.status
           );
-          self.props.navigate("/*", { replace: true });
+          props.navigate("/*", { replace: true });
           return;
         }
         // Examine the text in the response
         response.json().then(function (data) {
-          self.setState({ article: data });
+          setArticle(data);
         });
       })
       .catch(function (err) {
         console.log("Fetch Error :-S", err);
       });
-  }
+  }, [props]);
 
-  render() {
-    const { article } = this.state;
-
-    return (
-      <>
-        {!this.state.article.id ? (
-            <Loader />
-        ) : (
-          <>
-            <Navbar />
-            <ArticleDetails article={article} key={article.id} />
-            <FooterLinks
-              route="details"
-              previousArticle={this.state.article.prevId}
-              nextArticle={this.state.article.nextId}
-            />
-          </>
-        )}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {!article.id ? (
+        <Loader />
+      ) : (
+        <>
+          <Navbar />
+          <ArticleDetails article={article} key={article.id} />
+          <FooterLinks
+            route="details"
+            previousArticle={article.prevId}
+            nextArticle={article.nextId}
+          />
+        </>
+      )}
+    </>
+  );
+};
 
 const withRouter = (WrappedComponent) => (props) => {
   const params = useParams();

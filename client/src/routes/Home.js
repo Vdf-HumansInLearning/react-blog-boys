@@ -1,5 +1,4 @@
-import React from "react";
-import { Component } from "react/cjs/react.production.min";
+import React, { useState, useEffect } from "react";
 import AddArticle from "./../components/AddArticle/AddArticle";
 import Navbar from "./../components/Navbar/Navbar";
 import "./../Home.css";
@@ -9,136 +8,108 @@ import ModalAddArticle from "../components/ModalAddArticle/ModalAddArticle";
 import ModalDelete from "../components/ModalDelete/ModalDelete";
 import Article from "../components/Article/Article";
 import Loader from "../components/Loader/Loader";
+import ModalEdit from "../components/ModalEdit/ModalEdit";
+import ModalAdd from "../components/ModalAdd/ModalAdd";
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showModalAddArticle: false,
-      showModalDelete: false,
-      showSuccessMessage: false,
-      showModalEdit: false,
-      articlesList: [],
-      idToDelete: "",
-      selectedArticleToEdit: {},
-      numberOfArticles: 4,
-      indexStart: 0,
-      indexEnd: 3,
-      totalNumberOfArticles: 0,
-      isToastShown: false,
-      toastContent: "",
-    };
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.renderArticles = this.renderArticles.bind(this);
-    this.deleteArticle = this.deleteArticle.bind(this);
-    this.updateStartEndIndexes = this.updateStartEndIndexes.bind(this);
-    this.handleNext = this.handleNext.bind(this);
-    this.handlePrevious = this.handlePrevious.bind(this);
-    this.editArticle = this.editArticle.bind(this);
-    this.sendEditedArticle = this.sendEditedArticle.bind(this);
-    this.showToast = this.showToast.bind(this);
+const Home = () => {
+  const [articlesList, setArticlesList] = useState([]);
+  const [showModalAddArticle, setShowModalAddArticle] = useState(false);
+  const [showModalDelete, setShowModalDelete] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
+  const [idToDelete, setIdToDelete] = useState("");
+  const [selectedArticleToEdit, setSelectedArticleToEdit] = useState({});
+  const [numberOfArticles] = useState(4);
+  const [indexStart, setIndexStart] = useState(0);
+  const [indexEnd, setIndexEnd] = useState(3);
+  const [totalNumberOfArticles, setTotalNumberOfArticles] = useState(0);
+  const [isToastShown, setIsToastShown] = useState(false);
+  const [toastContent, setToastContent] = useState("");
+
+  function showToast(toastContent) {
+    setIsToastShown(true);
+    setToastContent(toastContent);
+    setTimeout(() => setIsToastShown(false), 5000);
   }
 
-  showToast(toastContent) {
-    this.setState({ isToastShown: true, toastContent: toastContent });
-    setTimeout(() => this.setState({ isToastShown: false }), 5000);
-  }
-
-  openModal(option, id) {
+  function openModal(option, id) {
     if (option === "add") {
-      this.setState({ showModalAddArticle: true });
+      setShowModalAddArticle(true);
     }
     if (option === "alert") {
-      this.setState({ showModalDelete: true, idToDelete: id });
+      setShowModalDelete(true);
+      setIdToDelete(id);
     }
     if (option === "success") {
-      this.setState({ showSuccessMessage: true });
+      setShowSuccessMessage(true);
     }
     if (option === "edit") {
-      this.setState({ showModalEdit: true });
+      setShowModalEdit(true);
     }
   }
 
-  closeModal(option) {
+  function closeModal(option) {
     if (option === "add") {
-      this.setState({ showModalAddArticle: false });
+      setShowModalAddArticle(false);
     }
     if (option === "alert") {
-      this.setState({ showModalDelete: false });
+      setShowModalDelete(false);
     }
     if (option === "edit") {
-      this.setState({ showModalEdit: false });
+      setShowModalEdit(false);
     }
   }
 
-  updateStartEndIndexes(button) {
+  function updateStartEndIndexes(button) {
     if (button === "next") {
-      this.setState({
-        indexStart: this.state.indexStart + this.state.numberOfArticles,
-        indexEnd: this.state.indexEnd + this.state.numberOfArticles,
-      });
+      setIndexStart(indexStart + numberOfArticles);
+      setIndexEnd(indexEnd + numberOfArticles);
     }
     if (button === "previous") {
-      this.setState({
-        indexStart: this.state.indexStart - this.state.numberOfArticles,
-        indexEnd: this.state.indexEnd - this.state.numberOfArticles,
-      });
+      setIndexStart(indexStart - numberOfArticles);
+      setIndexEnd(indexEnd - numberOfArticles);
     }
   }
 
-  handlePrevious() {
-    this.updateStartEndIndexes("previous");
+  function handlePrevious() {
+    updateStartEndIndexes("previous");
   }
 
-  handleNext() {
-    this.updateStartEndIndexes("next");
+  function handleNext() {
+    updateStartEndIndexes("next");
   }
 
-  componentDidUpdate(previousProps, previousState) {
-    if (previousState.indexStart !== this.state.indexStart) {
-      this.renderArticles(this);
-      window.scrollTo(0, 0);
-    }
-  }
+  useEffect(() => {
+    renderArticles();
+  }, [indexStart]);
 
-  renderArticles() {
-    const self = this;
+  function renderArticles() {
     fetch(
-      `http://localhost:3007/articles?indexStart=${this.state.indexStart}&indexEnd=${this.state.indexEnd}`
-    )
-      .then(function (response) {
-        if (response.status !== 200) {
-          console.log(
-            "looks like there was a problem. Status Code " + response.status
-          );
-          return;
-        }
+      `http://localhost:3007/articles?indexStart=${indexStart}&indexEnd=${indexEnd}`
+    ).then(function (response) {
+      if (response.status !== 200) {
+        console.log(
+          "looks like there was a problem. Status Code " + response.status
+        );
+        return;
+      }
+      response
+        .json()
+        .then(function (data) {
+          setArticlesList(data.articlesList);
+          setTotalNumberOfArticles(data.numberOfArticles);
 
-        response.json().then(function (data) {
-          self.setState(
-            {
-              articlesList: data.articlesList,
-              totalNumberOfArticles: data.numberOfArticles,
-            },
-            () => {
-              if (data.articlesList.length === 0) {
-                self.handlePrevious();
-              }
-            }
-          );
+          if (data.articlesList.length === 0) {
+            handlePrevious();
+          }
+        })
+        .catch(function (err) {
+          console.log("Fetch Error :-S", err);
         });
-      })
-      .catch(function (err) {
-        console.log("Fetch Error :-S", err);
-      });
+    });
   }
 
-  componentDidMount() {
-    this.renderArticles();
-  }
-
-  sendEditedArticle(article) {
+  function sendEditedArticle(article) {
     fetch(`http://localhost:3007/articles/${article.id}`, {
       headers: {
         Accept: "application/json",
@@ -148,105 +119,104 @@ class Home extends Component {
       body: JSON.stringify(article),
     }).then((res) => {
       if (res.status === 200) {
-        this.renderArticles(this);
-        this.showToast("This article has been edited successfully!");
+        renderArticles();
+        showToast("This article has been edited successfully!");
       }
     });
   }
 
-  deleteArticle() {
-    fetch(`http://localhost:3007/articles/${this.state.idToDelete}`, {
+  function deleteArticle() {
+    fetch(`http://localhost:3007/articles/${idToDelete}`, {
       method: "DELETE",
     }).then((res) => {
       if (res.status === 200) {
-        this.renderArticles();
-        this.setState({
-          idToDelete: "",
-        });
+        renderArticles();
+        setIdToDelete("");
       }
     });
   }
 
-  editArticle(id) {
+  function editArticle(id) {
     if (id) {
-      this.setState({
-        selectedArticleToEdit: this.state.articlesList.find(
-          (item) => item.id === id
-        ),
-      });
+      setSelectedArticleToEdit(articlesList.find((item) => item.id === id));
     }
   }
 
-  render() {
-    const showModalAddArticle = this.state.showModalAddArticle;
-    const showModalDelete = this.state.showModalDelete;
-    const showSuccessMessage = this.state.showSuccessMessage;
-    const showModalEdit = this.state.showModalEdit;
+  const articles = articlesList.map((article) => (
+    <Article
+      article={article}
+      id={article.id}
+      key={article.id}
+      showModalDelete={showModalDelete}
+      showModalEdit={showModalEdit}
+      openModal={openModal}
+      closeModal={closeModal}
+      editArticle={editArticle}
+    />
+  ));
 
-    const { articlesList } = this.state;
-    const articles = articlesList.map((article) => (
-      <Article
-        article={article}
-        id={article.id}
-        key={article.id}
-        showModalDelete={showModalDelete}
-        showModalEdit={showModalEdit}
-        openModal={this.openModal}
-        closeModal={this.closeModal}
-        editArticle={this.editArticle}
-      />
-    ));
-
-    return (
-      <>
-        {this.state.articlesList.length === 0 ? (
-          <Loader />
-        ) : (
-          <>
-            <SuccessAlert
-              showSuccessMessage={showSuccessMessage}
-              isToastShown={this.state.isToastShown}
-              toastContent={this.state.toastContent}
-            />
-            <Navbar />
-            <AddArticle
-              showModalAddArticle={showModalAddArticle}
-              openModal={this.openModal}
-              closeModal={this.closeModal}
-              showSuccessMessage={showSuccessMessage}
-            />
-            <div id="root-articlesList" className="main error">
-              <article>{articles}</article>
-            </div>
-            <FooterLinks
-              indexStart={this.state.indexStart}
-              indexEnd={this.state.indexEnd}
-              totalNumberOfArticles={this.state.totalNumberOfArticles}
-              route="home"
-              handlePrevious={this.handlePrevious}
-              handleNext={this.handleNext}
-            />
-            <ModalAddArticle
-              showModalAddArticle={this.state.showModalAddArticle}
-              closeModal={this.closeModal}
-              sendEditedArticle={this.sendEditedArticle}
-              showModalEdit={showModalEdit}
-              article={this.state.selectedArticleToEdit}
-              openModal={this.openModal}
-              showSuccessMessage={showSuccessMessage}
-              showToast={this.showToast}
-              renderArticles={this.renderArticles}
-            />
-            <ModalDelete
-              showModalDelete={this.state.showModalDelete}
-              closeModal={this.closeModal}
-              deleteArticle={this.deleteArticle}
-            />
-          </>
-        )}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {articlesList.length === 0 ? (
+        <Loader />
+      ) : (
+        <>
+          <SuccessAlert
+            showSuccessMessage={showSuccessMessage}
+            isToastShown={isToastShown}
+            toastContent={toastContent}
+          />
+          <Navbar />
+          <AddArticle
+            showModalAddArticle={showModalAddArticle}
+            openModal={openModal}
+            closeModal={closeModal}
+            showSuccessMessage={showSuccessMessage}
+          />
+          <div id="root-articlesList" className="main error">
+            <article>{articles}</article>
+          </div>
+          <FooterLinks
+            indexStart={indexStart}
+            indexEnd={indexEnd}
+            totalNumberOfArticles={totalNumberOfArticles}
+            route="home"
+            handlePrevious={handlePrevious}
+            handleNext={handleNext}
+          />
+          {/* <ModalAddArticle
+            showModalAddArticle={showModalAddArticle}
+            showToast={showToast}
+            renderArticles={renderArticles}
+            closeModal={closeModal}
+            openModal={openModal}
+            showModalEdit={showModalEdit}
+            article={selectedArticleToEdit}
+            sendEditedArticle={sendEditedArticle}
+          /> */}
+          <ModalAdd
+            showModalAddArticle={showModalAddArticle}
+            renderArticles={renderArticles}
+            showToast={showToast}
+            closeModal={closeModal}
+            openModal={openModal}
+          />
+          <ModalEdit
+            showModalEdit={showModalEdit}
+            openModal={openModal}
+            closeModal={closeModal}
+            sendEditedArticle={sendEditedArticle}
+            article={selectedArticleToEdit}
+          />
+          <ModalDelete
+            showModalDelete={showModalDelete}
+            closeModal={closeModal}
+            deleteArticle={deleteArticle}
+          />
+        </>
+      )}
+    </>
+  );
+};
 
 export default Home;
